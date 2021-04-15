@@ -14,17 +14,7 @@ ON disp.disp_id = card.disp_id
 INNER JOIN new_district district
 ON acct.district_id = district.district_id;
 
-SELECT *
-FROM new_account accnt
-INNER JOIN new_disp disp
-ON accnt.account_id = disp.account_id
-INNER JOiN new_trans trns
-ON accnt.account_id = trns.account_id
-INNER JOIN new_district dist
-ON accnt.district_id = dist.district_id
-INNER JOIN new_client clnt
-ON dist.district_id = clnt.district_id;
-
+/* Update the tables by changing the Czech languages into English*/
 
 UPDATE new_account
 SET frequency = 'Monthly Issued'
@@ -99,7 +89,7 @@ INNER JOIN new_trans trans
 ON acnt.account_id = trans.account_id
 INNER JOIN new_client clnt
 ON dist.district_id = clnt.district_id
-WHERE trans.date > '950101'
+WHERE trans.date > 950101
 GROUP BY client_id;
 
 /* min and max transaction amount for each client*/
@@ -140,26 +130,12 @@ HAVING total_amount > 500000;
 
 SELECT SUM(new_trans.amount) total_amount, new_trans.account_id
 FROM new_trans
-WHERE new_trans.amount >'500000'
+WHERE new_trans.amount >500000
 GROUP BY new_trans.account_id;
 
 /*describe behaviour of ppl that have problem with paying their loans
-Thought process: loans problem >> salary, area of living?
+Thought process: loans problem >> salary, area of living?, the amount of balance? Late payment?
 */
-
-SELECT *
-FROM new_district dist
-LEFT JOIN new_account accnt
-ON dist.district_id = accnt.district_id
-LEFT JOIN new_loan loan
-ON accnt.account_id = loan.account_id
-UNION
-SELECT*
-FROM new_district dist
-RIGHT JOIN new_account accnt
-ON dist.district_id = accnt.district_id
-RIGHT JOIN new_loan loan
-ON accnt.account_id = loan.account_id;
 
 SELECT accnt.account_id,trxn.date, trxn.balance,
        loan.monthly_payments,loan.loan_status,
